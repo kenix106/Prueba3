@@ -9,8 +9,12 @@ import android.widget.TextView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.firebase.firestore.DocumentSnapshot;
 
 public class NoteAdapter extends FirestoreRecyclerAdapter <Note, NoteAdapter.NoteHolder>{
+
+    private OnItemClickListener listener;
+
 
     public NoteAdapter(@NonNull FirestoreRecyclerOptions<Note> options) {
         super(options);
@@ -51,6 +55,27 @@ public class NoteAdapter extends FirestoreRecyclerAdapter <Note, NoteAdapter.Not
             textViewDescription = itemView.findViewById(R.id.text_view_description);
             textViewPriority = itemView.findViewById(R.id.text_view_priority);
 
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+
+                    if (position != RecyclerView.NO_POSITION && listener != null){
+
+                        listener.onItemClick(getSnapshots().getSnapshot(position),position);
+
+                    }
+                }
+            });
+
         }
+    }
+
+    public interface OnItemClickListener{
+        void onItemClick (DocumentSnapshot documentSnapshot, int position);
+    }
+
+    public void setOnItemClickListener (OnItemClickListener listener){
+        this.listener = listener;
     }
 }

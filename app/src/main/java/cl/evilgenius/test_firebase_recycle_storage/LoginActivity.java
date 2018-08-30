@@ -18,7 +18,7 @@ import com.google.firebase.auth.FirebaseAuth;
 public class LoginActivity extends AppCompatActivity {
 
     private EditText mail, pass;
-    private Button login;
+   // private Button login;
     private TextView regis;
 
     FirebaseAuth firebaseAuth;
@@ -27,20 +27,51 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_login);
         mail = findViewById(R.id.ET_email);
         pass = findViewById(R.id.ET_pass);
 
-        //   login = findViewById(R.id.BTN_Login);
+      //  login = findViewById(R.id.BTN_Login);
 
         regis = findViewById(R.id.TV_login);
 
         firebaseAuth = FirebaseAuth.getInstance();
-        setTitle("Notas Personales LOGIN");
+        //  setTitle("Notas Personales LOGIN");
 
-        //Submit = (Button)loginDialog.findViewById(R.id.Submit);
-        login= (Button) findViewById(R.id.BTN_Login);
+
+        //--------------------------------------------
+        Button login = (Button) findViewById(R.id.BTN_Login);
         login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String email1 = mail.getText().toString();
+                String pass1 = pass.getText().toString();
+
+                if (valid()) {
+                    firebaseAuth.signInWithEmailAndPassword(email1, pass1).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+
+                            if (task.isSuccessful()) {
+                                //  String wtf = firebaseAuth.getUid().toString();
+                                finish();
+                                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                startActivity(intent);
+                                //  Toast.makeText(LoginActivity.this, wtf, Toast.LENGTH_LONG).show();
+                            } else {
+                                Toast.makeText(LoginActivity.this, "Contraseña o Correo Incorrecto", Toast.LENGTH_SHORT).show();
+                            }
+
+                        }
+                    });
+                }// final 1st IF
+            }
+        });
+        //-----------------------------------------------
+
+        // Button login= (Button) findViewById(R.id.BTN_Login);
+     /*   login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 email1 = mail.getText().toString();
@@ -52,11 +83,11 @@ public class LoginActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<AuthResult> task) {
 
                             if (task.isSuccessful()) {
-                              //  String wtf = firebaseAuth.getUid().toString();
+                                //  String wtf = firebaseAuth.getUid().toString();
                                 finish();
                                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                                 startActivity(intent);
-                              //  Toast.makeText(LoginActivity.this, wtf, Toast.LENGTH_LONG).show();
+                                //  Toast.makeText(LoginActivity.this, wtf, Toast.LENGTH_LONG).show();
                             } else {
                                 Toast.makeText(LoginActivity.this, "Contraseña o Correo Incorrecto", Toast.LENGTH_SHORT).show();
                             }
@@ -64,8 +95,9 @@ public class LoginActivity extends AppCompatActivity {
                         }
                     });
                 }// final 1st IF
-            }
-        });
+            }         //final onclick
+        });*/
+
 
         regis.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,7 +107,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-    }
+    }//fin Oncreate
 
     private Boolean valid() {
         Boolean result = false;
@@ -87,4 +119,6 @@ public class LoginActivity extends AppCompatActivity {
         }
         return result;
     }
+
+
 }

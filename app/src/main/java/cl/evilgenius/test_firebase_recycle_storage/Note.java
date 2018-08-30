@@ -5,6 +5,18 @@ public class Note {
     private String description;
     private int priority;
 
+    public void setTittle(String tittle) {
+        this.tittle = tittle;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setPriority(int priority) {
+        this.priority = priority;
+    }
+
     public Note(){
         //empty constructor needed
     }
